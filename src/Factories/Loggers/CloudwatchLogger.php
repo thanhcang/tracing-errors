@@ -1,6 +1,6 @@
 <?php
 
-namespace MakiniAdapter\TracingErrors\Factories;
+namespace MakiniAdapter\TracingErrors\Factories\Loggers;
 
 use MakiniAdapter\TracingErrors\Utils\HeadersResource;
 use Monolog\Handler\AbstractProcessingHandler;

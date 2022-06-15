@@ -7,6 +7,7 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use MakiniAdapter\TracingErrors\Factories\Loggers;
 
 class LoggerManager
 {
@@ -23,7 +24,7 @@ class LoggerManager
      */
     public function resolve(): LoggerInterface
     {
-        $instance = $this->isCloudWatch() ? (new CloudwatchLogger($this->container)) : (new DefaultLogger($this->container));
+        $instance = $this->isCloudWatch() ? (new Loggers\CloudwatchLogger($this->container)) : (new Loggers\DefaultLogger($this->container));
         $handler = $instance->resolve();
 
         $lineFormatter = new LineFormatter(null, null, true, true);

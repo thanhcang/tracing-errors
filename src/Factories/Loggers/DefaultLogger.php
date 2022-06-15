@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MakiniAdapter\TracingErrors\Factories;
+namespace MakiniAdapter\TracingErrors\Factories\Loggers;
 
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\StreamHandler;

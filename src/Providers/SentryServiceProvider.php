@@ -2,6 +2,7 @@
 
 namespace MakiniAdapter\TracingErrors\Providers;
 
+use Illuminate\Support\Arr;
 use Psr\Container\ContainerInterface;
 use Sentry;
 
@@ -29,7 +30,7 @@ class SentryServiceProvider
     public function boot()
     {
         Sentry\init([
-            'dsn' => $this->container->get('services.sentry')
+            'dsn' => Arr::get($this->container->get('services.sentry'), 'dsn')
         ]);
     }
 }
