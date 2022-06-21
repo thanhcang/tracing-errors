@@ -6,7 +6,7 @@ return [
     'log.displayErrorDetails' => true, // Should be set to false in production
     'log.logError' => false,
     'log.logErrorDetails' => false,
-    'log.name' => '[Adapter][Inextia]',
+    'log.name' => env('LOG_NAME'),
     'log.level' => LogLevel::DEBUG,
     'log.path' => env('LOG_PATH', 'php://stdout'),
     'log.channel' => env('LOG_CHANNEL', 'default'),
