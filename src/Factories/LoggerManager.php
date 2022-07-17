@@ -22,10 +22,10 @@ class LoggerManager
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function resolve(array $resource = []): LoggerInterface
+    public function resolve(): LoggerInterface
     {
-        $instance = $this->isCloudWatch($resource) ? (new Loggers\CloudwatchLogger($this->container)) : (new Loggers\DefaultLogger($this->container));
-        $handler = $instance->resolve($resource);
+        $instance = $this->isCloudWatch() ? (new Loggers\CloudwatchLogger($this->container)) : (new Loggers\DefaultLogger($this->container));
+        $handler = $instance->resolve();
 
         $lineFormatter = new LineFormatter(null, null, true, true);
         $handler->setFormatter($lineFormatter);
@@ -39,13 +39,9 @@ class LoggerManager
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    private function isCloudWatch(array $resource = []): bool
+    private function isCloudWatch(): bool
     {
         $internalHeaderResource =  HeadersResource::getInstanceFromHeaders();
-        
-        if ($internalHeaderResource === []) {
-            $internalHeaderResource = HeadersResource::getInstanceFromResource($resource);
-        }
 
         if (!$internalHeaderResource->transId) {
             return false;

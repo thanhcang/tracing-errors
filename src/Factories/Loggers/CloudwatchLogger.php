@@ -17,6 +17,7 @@ class CloudwatchLogger
     {
         $this->container = $container;
     }
+
     /**
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
@@ -53,22 +54,33 @@ class CloudwatchLogger
             return $resource->transId;
         }
 
+        // @TODO : refactor
         if ($data) {
             $resource = HeadersResource::getInstanceFromResource($data);
-        }
 
-        if ($resource->transId) {
-            return $resource->transId;
+            if ($resource->transId) {
+                return $resource->transId;
+            }
         }
 
         return Uuid::uuid4()->toString();
     }
 
-    private function group(): string
+    private function group($data = []): string
     {
         $resource = HeadersResource::getInstanceFromHeaders();
+
         if ($resource->tranEnv && in_array($resource->tranEnv, ['dev', 'prod'])) {
             return $this->container->get('log.aws.group') . '/' . $resource->tranEnv;
+        }
+
+        // @TODO : refactor
+        if ($data) {
+            $resource = HeadersResource::getInstanceFromResource($data);
+
+            if ($resource->tranEnv && in_array($resource->tranEnv, ['dev', 'prod'])) {
+                return $this->container->get('log.aws.group') . '/' . $resource->tranEnv;
+            }
         }
 
         return $this->container->get('log.aws.group.default');

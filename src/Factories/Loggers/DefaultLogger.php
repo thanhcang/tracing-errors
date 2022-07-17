@@ -16,7 +16,7 @@ class DefaultLogger
         $this->container = $container;
     }
 
-    public function resolve(array $resource = []): AbstractProcessingHandler
+    public function resolve(): AbstractProcessingHandler
     {
         return new StreamHandler($this->container->get('log.path'), $this->container->get('log.level'));
     }
