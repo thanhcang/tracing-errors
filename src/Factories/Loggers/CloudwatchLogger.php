@@ -22,7 +22,7 @@ class CloudwatchLogger
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Exception
      */
-    public function resolve(): AbstractProcessingHandler
+    public function resolve(array $resource = []): AbstractProcessingHandler
     {
         $configs = $this->container->get('services.aws');
         $sdkParams = [
@@ -39,15 +39,23 @@ class CloudwatchLogger
         return new CloudWatch(
             $client,
             $this->group(),
-            $this->stream(),
+            $this->stream($resource),
             $this->container->get('log.aws.retention'),
             $this->container->get('log.aws.batchSize')
         );
     }
 
-    public function stream(): string
+    public function stream($data = []): string
     {
         $resource = HeadersResource::getInstanceFromHeaders();
+
+        if ($resource->transId) {
+            return $resource->transId;
+        }
+
+        if ($data) {
+            $resource = HeadersResource::getInstanceFromResource($data);
+        }
 
         if ($resource->transId) {
             return $resource->transId;

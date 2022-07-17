@@ -52,4 +52,17 @@ class HeadersResource extends Fluent
     {
         return new self(getallheaders());
     }
+    
+    public static function getInstanceFromResource(array $resource): self
+    {
+        return new self($resource);
+    }
+
+    public function toArray() : array // Support on child process
+    {
+        return [
+            self::INTEGRATION_TRANS_ID => $this->transId,
+            self::INTEGRATION_ENV => $this->tranEnv
+        ];
+    }
 }
